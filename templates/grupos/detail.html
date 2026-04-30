@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}{{ grupo.nombre_grupo }} - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h3">
+        <i class="fas fa-layer-group me-2"></i>Detalle de Grupo
+    </h2>
+    <div>
+        <a href="{% url 'grupos_list' %}" class="btn btn-outline-secondary me-2">
+            <i class="fas fa-arrow-left me-1"></i>Volver
+        </a>
+        <a href="#" class="btn btn-warning">
+            <i class="fas fa-edit me-1"></i>Editar
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Información del Grupo</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <p class="mb-1 text-muted">Nombre:</p>
+                    <h4>{{ grupo.nombre_grupo }}</h4>
+                </div>
+                <div class="mb-3">
+                    <p class="mb-1 text-muted">Estado:</p>
+                    <h5>
+                        {% if grupo.estado == 1 %}
+                        <span class="badge bg-success">Activo</span>
+                        {% else %}
+                        <span class="badge bg-danger">Inactivo</span>
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="mb-3">
+                    <p class="mb-1 text-muted">Total Líneas:</p>
+                    <h5>{{ grupo.lineaarticulo_set.count }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Líneas Asociadas (Destinos)</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for linea in grupo.lineaarticulo_set.all %}
+                            <tr>
+                                <td>{{ linea.nombre_linea }}</td>
+                                <td>
+                                    {% if linea.estado == 1 %}
+                                    <span class="badge bg-success">Activo</span>
+                                    {% else %}
+                                    <span class="badge bg-danger">Inactivo</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="#" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+                                        <a href="#" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center py-3">No hay líneas asociadas</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

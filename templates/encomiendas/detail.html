@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block title %}{{ encomienda.descripcion }} - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="h3">
+        <i class="fas fa-box me-2"></i>Detalle de Encomienda
+    </h2>
+    <div>
+        <a href="{% url 'encomiendas_list' %}" class="btn btn-outline-secondary me-2">
+            <i class="fas fa-arrow-left me-1"></i>Volver
+        </a>
+        <a href="{% url 'encomienda_edit' encomienda.articulo_id %}" class="btn btn-warning">
+            <i class="fas fa-edit me-1"></i>Editar
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Información de la Encomienda</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p class="mb-1 text-muted">Código:</p>
+                        <h5>{{ encomienda.codigo_articulo }}</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1 text-muted">Código de Barras:</p>
+                        <h5>{{ encomienda.codigo_barras|default:"No especificado" }}</h5>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <p class="mb-1 text-muted">Descripción:</p>
+                    <h4>{{ encomienda.descripcion }}</h4>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p class="mb-1 text-muted">Presentación:</p>
+                        <h5>{{ encomienda.presentacion }}</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1 text-muted">Stock / Peso:</p>
+                        <h5>
+                            {% if encomienda.stock < 10 %}
+                            <span class="badge bg-danger">{{ encomienda.stock }} kg</span>
+                            {% else %}
+                            <span class="badge bg-success">{{ encomienda.stock }} kg</span>
+                            {% endif %}
+                        </h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="mb-1 text-muted">Origen / Grupo:</p>
+                        <h5>{{ encomienda.grupo.nombre_grupo }}</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="mb-1 text-muted">Destino / Línea:</p>
+                        <h5>{{ encomienda.linea.nombre_linea }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Últimos Movimientos</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tipo</th>
+                                <th>Detalle</th>
+                                <th>Usuario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>25/04/2025 15:30</td>
+                                <td><span class="badge bg-success">Registrado</span></td>
+                                <td>Encomienda creada</td>
+                                <td>Admin</td>
+                            </tr>
+                            <tr>
+                                <td>24/04/2025 14:20</td>
+                                <td><span class="badge bg-primary">En Tránsito</span></td>
+                                <td>Salió de sucursal origen</td>
+                                <td>Operador1</td>
+                            </tr>
+                            <tr>
+                                <td>23/04/2025 09:15</td>
+                                <td><span class="badge bg-warning">En Ruta</span></td>
+                                <td>Llegó a punto intermedio</td>
+                                <td>Chofer2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Precios / Tarifas</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Tarifa Normal:</span>
+                        <span class="badge bg-primary rounded-pill">${{ encomienda.listaprecio.precio_1 }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Tarifa Express:</span>
+                        <span class="badge bg-primary rounded-pill">${{ encomienda.listaprecio.precio_2 }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Tarifa con Seguro:</span>
+                        <span class="badge bg-primary rounded-pill">${{ encomienda.listaprecio.precio_3 }}</span>
+                    </li>
+                </ul>
+                <hr>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><b>Costo Operativo:</b></span>
+                        <span class="badge bg-info rounded-pill">${{ encomienda.listaprecio.precio_compra }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><b>Precio Base:</b></span>
+                        <span class="badge bg-info rounded-pill">${{ encomienda.listaprecio.precio_costo }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Acciones Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success">
+                        <i class="fas fa-truck me-2"></i>Registrar Envío
+                    </button>
+                    <button class="btn btn-warning">
+                        <i class="fas fa-sync-alt me-2"></i>Actualizar Estado
+                    </button>
+                    <button class="btn btn-info">
+                        <i class="fas fa-barcode me-2"></i>Imprimir Etiqueta
+                    </button>
+                    <button class="btn btn-danger" onclick="confirmarEliminacion(event, '¿Desea eliminar esta encomienda?')">
+                        <i class="fas fa-trash me-2"></i>Eliminar Encomienda
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

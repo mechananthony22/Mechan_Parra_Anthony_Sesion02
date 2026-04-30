@@ -1,0 +1,20 @@
+{
+  "name": "proyecto_encomiendas",
+  "version": "1.0.0",
+  "description": "Sistema POS - Punto de Venta para gestión de encomiendas",
+  "main": "manage.py",
+  "scripts": {
+    "start": "python manage.py runserver",
+    "migrate": "python manage.py migrate",
+    "makemigrations": "python manage.py makemigrations",
+    "collectstatic": "python manage.py collectstatic --noinput",
+    "createsuperuser": "python manage.py createsuperuser"
+  },
+  "keywords": [
+    "django",
+    "pos",
+    "encomiendas"
+  ],
+  "author": "",
+  "license": "ISC"
+}
